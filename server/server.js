@@ -5,7 +5,10 @@ const path = require("path");
 const app = express();
 
 const port = process.env.PORT || 5000;
-const staticPath = path.resolve(__dirname, ".", "dist");
+const staticPath = path.resolve(__dirname, "dist");
+
+// setup middleware
+app.use(express.static(staticPath));
 
 const server = http.createServer(app);
 
@@ -28,7 +31,6 @@ io.on("connection", (socket) => {
 
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
-    app.use(express.static(staticPath));
     const indexFile = path.join(__dirname, "dist", "index.html");
     return res.sendFile(indexFile);
   });
